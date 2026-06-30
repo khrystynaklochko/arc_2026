@@ -571,7 +571,8 @@ class FuzzyRecursiveAgent(BaseAgent):
         if self.plan:
             action = self.plan.pop(0)
             self._update_state(state, action, observation)
-            return action.value
+            # Handle both GameAction enum and int
+            return action.value if isinstance(action, GameAction) else action
         
         # 2. Try to plan toward high-value state
         path = self.graph.bfs_to_goal(
@@ -584,7 +585,8 @@ class FuzzyRecursiveAgent(BaseAgent):
             self.plan = path[1:]
             action = path[0]
             self._update_state(state, action, observation)
-            return action.value
+            # Handle both GameAction enum and int
+            return action.value if isinstance(action, GameAction) else action
         
         # 3. Fuzzy scoring + UCB
         scored_actions = []
@@ -613,7 +615,8 @@ class FuzzyRecursiveAgent(BaseAgent):
         best_score, best_action, best_features = scored_actions[0]
         
         self._update_state(state, best_action, observation)
-        return best_action.value
+        # Handle both GameAction enum and int
+        return best_action.value if isinstance(best_action, GameAction) else best_action
     
     def _update_state(self, state: State, action: GameAction, observation: np.ndarray):
         """Update internal state"""
