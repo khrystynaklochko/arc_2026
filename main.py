@@ -7,9 +7,17 @@ Runs FuzzyRecursiveAgent on all games and generates submission.parquet
 import sys
 import pandas as pd
 from pathlib import Path
+import os
 
-# Add agents to path
-sys.path.insert(0, str(Path(__file__).parent))
+# Add current directory and agents to path
+current_dir = Path(__file__).parent.absolute()
+sys.path.insert(0, str(current_dir))
+sys.path.insert(0, str(current_dir / 'agents'))
+
+# Also try /kaggle/working if running on Kaggle
+if os.path.exists('/kaggle/working'):
+    sys.path.insert(0, '/kaggle/working')
+    sys.path.insert(0, '/kaggle/working/agents')
 
 from agents.fuzzy_agent import FuzzyRecursiveAgent
 import arc_agi
