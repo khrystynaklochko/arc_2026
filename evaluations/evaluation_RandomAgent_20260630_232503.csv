@@ -1,0 +1,4 @@
+game_id,success,total_reward,steps,time_taken,final_score,error
+ls20,False,0.0,0,0.8406438827514648,0.0,too many values to unpack (expected 2)
+ar25,False,0.0,0,1.106062889099121,0.0,too many values to unpack (expected 2)
+ft09,False,0.0,0,0.8933708667755127,0.0,too many values to unpack (expected 2)

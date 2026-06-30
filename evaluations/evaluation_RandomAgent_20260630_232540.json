@@ -1,0 +1,49 @@
+{
+  "agent": "RandomAgent",
+  "timestamp": "2026-06-30 23:25:40",
+  "results": [
+    {
+      "game_id": "ls20",
+      "success": false,
+      "total_reward": 0.0,
+      "steps": 0,
+      "time_taken": 0.690000057220459,
+      "error": "too many values to unpack (expected 5)",
+      "final_score": 0.0,
+      "actions_taken": []
+    },
+    {
+      "game_id": "ar25",
+      "success": false,
+      "total_reward": 0.0,
+      "steps": 0,
+      "time_taken": 0.5028250217437744,
+      "error": "too many values to unpack (expected 5)",
+      "final_score": 0.0,
+      "actions_taken": []
+    },
+    {
+      "game_id": "ft09",
+      "success": false,
+      "total_reward": 0.0,
+      "steps": 0,
+      "time_taken": 0.43195605278015137,
+      "error": "too many values to unpack (expected 5)",
+      "final_score": 0.0,
+      "actions_taken": []
+    }
+  ],
+  "metrics": {
+    "total_games": 3,
+    "successful_games": 0,
+    "failed_games": 3,
+    "success_rate": 0.0,
+    "total_reward": 0.0,
+    "average_reward": 0.0,
+    "total_steps": 0,
+    "average_steps": 0.0,
+    "total_time": 1.6247811317443848,
+    "average_time": 0.5415937105814616,
+    "games_per_second": 1.8464025347088833
+  }
+}

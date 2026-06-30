@@ -1,0 +1,49 @@
+{
+  "agent": "RandomAgent",
+  "timestamp": "2026-06-30 23:26:13",
+  "results": [
+    {
+      "game_id": "ls20",
+      "success": false,
+      "total_reward": 0.0,
+      "steps": 0,
+      "time_taken": 0.6073179244995117,
+      "error": "object of type 'FrameDataRaw' has no len()",
+      "final_score": 0.0,
+      "actions_taken": []
+    },
+    {
+      "game_id": "ar25",
+      "success": false,
+      "total_reward": 0.0,
+      "steps": 0,
+      "time_taken": 0.9245412349700928,
+      "error": "object of type 'FrameDataRaw' has no len()",
+      "final_score": 0.0,
+      "actions_taken": []
+    },
+    {
+      "game_id": "ft09",
+      "success": false,
+      "total_reward": 0.0,
+      "steps": 0,
+      "time_taken": 0.3611891269683838,
+      "error": "'int' object has no attribute 'name'",
+      "final_score": 0.0,
+      "actions_taken": []
+    }
+  ],
+  "metrics": {
+    "total_games": 3,
+    "successful_games": 0,
+    "failed_games": 3,
+    "success_rate": 0.0,
+    "total_reward": 0.0,
+    "average_reward": 0.0,
+    "total_steps": 0,
+    "average_steps": 0.0,
+    "total_time": 1.8930482864379883,
+    "average_time": 0.6310160954793295,
+    "games_per_second": 1.5847456303636516
+  }
+}

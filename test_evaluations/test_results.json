@@ -1,0 +1,39 @@
+{
+  "agent": "TestAgent",
+  "timestamp": "2026-06-30 23:24:02",
+  "results": [
+    {
+      "game_id": "ls20",
+      "success": false,
+      "total_reward": 0.0,
+      "steps": 0,
+      "time_taken": 0.4118170738220215,
+      "error": "too many values to unpack (expected 2)",
+      "final_score": 0.0,
+      "actions_taken": []
+    },
+    {
+      "game_id": "ls21",
+      "success": false,
+      "total_reward": 0.0,
+      "steps": 0,
+      "time_taken": 0.37315988540649414,
+      "error": "'NoneType' object has no attribute 'reset'",
+      "final_score": 0.0,
+      "actions_taken": []
+    }
+  ],
+  "metrics": {
+    "total_games": 2,
+    "successful_games": 0,
+    "failed_games": 2,
+    "success_rate": 0.0,
+    "total_reward": 0.0,
+    "average_reward": 0.0,
+    "total_steps": 0,
+    "average_steps": 0.0,
+    "total_time": 0.7849769592285156,
+    "average_time": 0.3924884796142578,
+    "games_per_second": 2.547845483217269
+  }
+}

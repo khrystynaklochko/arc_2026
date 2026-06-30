@@ -1,0 +1,4 @@
+game_id,success,total_reward,steps,time_taken,final_score,error
+ls20,False,0.0,0,0.6073179244995117,0.0,object of type 'FrameDataRaw' has no len()
+ar25,False,0.0,0,0.9245412349700928,0.0,object of type 'FrameDataRaw' has no len()
+ft09,False,0.0,0,0.3611891269683838,0.0,'int' object has no attribute 'name'

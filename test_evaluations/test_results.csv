@@ -1,0 +1,3 @@
+game_id,success,total_reward,steps,time_taken,final_score,error
+ls20,False,0.0,0,0.4118170738220215,0.0,too many values to unpack (expected 2)
+ls21,False,0.0,0,0.37315988540649414,0.0,'NoneType' object has no attribute 'reset'
