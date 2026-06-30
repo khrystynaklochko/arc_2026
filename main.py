@@ -34,14 +34,14 @@ def main():
     arcade = arc_agi.Arcade()
     
     # Get all games
-    games = arcade.list_games()
+    games = arcade.get_environments()
     print(f"\nRunning on {len(games)} games...")
     
     results = []
     
     # Run on each game
-    for i, game_info in enumerate(games, 1):
-        game_id = game_info.get('id', game_info.get('name', f'game_{i}'))
+    for i, game_env in enumerate(games, 1):
+        game_id = game_env.game_id
         print(f"\n[{i}/{len(games)}] Running: {game_id}")
         
         try:
@@ -59,8 +59,15 @@ def main():
             
             # Run episode
             for step in range(100):
-                action = agent.select_action(observation, info)
-                frame_data = env.step(action)
+                try:
+                    action = agent.select_action(observation, info)
+                    frame_data = env.step(action)
+                except Exception as step_error:
+                    print(f"  ⚠️  Step {step} error: {step_error}")
+                    # Continue with a random action
+                    import random
+                    action = random.randint(0, 7)
+                    frame_data = env.step(action)
                 
                 observation = frame_data
                 info = {

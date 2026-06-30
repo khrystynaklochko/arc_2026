@@ -1,0 +1,18 @@
+{
+  "agent": "FuzzyRecursiveAgent",
+  "timestamp": "2026-07-01 00:07:45",
+  "results": [
+    {
+      "game_id": "bp35-0a0ad940",
+      "success": false,
+      "error": "'int' object has no attribute 'name'",
+      "total_reward": 0,
+      "steps": 0
+    }
+  ],
+  "summary": {
+    "total_games": 1,
+    "successful_games": 0,
+    "total_reward": 0
+  }
+}
