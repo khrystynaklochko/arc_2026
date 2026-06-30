@@ -48,9 +48,8 @@ def main():
             # Create environment
             env = arcade.make(game_id, render_mode=None)
             
-            # Reset and set baseline actions
+            # Reset agent
             agent.reset()
-            agent.baseline_actions = game_env.baseline_actions
             frame_data = env.reset()
             observation = frame_data
             info = {

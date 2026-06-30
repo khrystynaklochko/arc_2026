@@ -1,36 +1,48 @@
 """
-Baseline Agent - Uses provided baseline actions to win games
+Baseline Agent - Uses random valid actions with fallback handling
 """
 from typing import Any, Dict
 import numpy as np
+import random
 from agents.base_agent import BaseAgent
+
+from arcengine import GameAction
 
 
 class BaselineAgent(BaseAgent):
-    """Agent that uses baseline actions from game metadata"""
+    """Agent that uses random valid GameAction enums"""
     
     def __init__(self):
         super().__init__()
-        self.baseline_actions = []
-        self.action_index = 0
+        # Available GameAction enums (ACTION1-7, RESET)
+        self.valid_actions = [
+            GameAction.ACTION1,
+            GameAction.ACTION2,
+            GameAction.ACTION3,
+            GameAction.ACTION4,
+            GameAction.ACTION5,
+            GameAction.ACTION6,
+            GameAction.ACTION7,
+        ]
         
     def reset(self):
         """Reset agent state"""
-        self.action_index = 0
+        pass
         
-    def select_action(self, observation: Any, info: Dict[str, Any]) -> int:
-        """Select next baseline action"""
-        # Get baseline actions from observation if available
-        if hasattr(observation, 'baseline_actions') and self.action_index == 0:
-            self.baseline_actions = observation.baseline_actions
-            
-        # Return next baseline action
-        if self.action_index < len(self.baseline_actions):
-            action = self.baseline_actions[self.action_index]
-            self.action_index += 1
-            return action
+    def select_action(self, observation: Any, info: Dict[str, Any]):
+        """
+        Select a random valid action.
+        Returns GameAction enum to avoid the 'int' object has no attribute 'name' error.
+        """
+        # Get available actions from info if provided
+        available_actions = info.get('available_actions', None)
         
-        # If we run out of baseline actions, return 0
-        return 0
+        # If available_actions is provided and is a list of GameAction enums, use them
+        if available_actions and len(available_actions) > 0:
+            # Return a GameAction enum directly
+            return random.choice(available_actions)
+        
+        # Otherwise, return a random GameAction enum from our valid list
+        return random.choice(self.valid_actions)
 
 # Made with Bob
