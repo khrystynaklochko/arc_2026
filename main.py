@@ -19,22 +19,22 @@ if os.path.exists('/kaggle/working'):
     sys.path.insert(0, '/kaggle/working')
     sys.path.insert(0, '/kaggle/working/agents')
 
-from agents.fuzzy_agent import FuzzyRecursiveAgent
+from agents.baseline_agent import BaselineAgent
 import arc_agi
 
 def main():
     """Run agent on all games and generate submission"""
     print("=" * 60)
     print("ARC Prize 2026 - Kaggle Submission")
-    print("Agent: FuzzyRecursiveAgent")
+    print("Agent: BaselineAgent")
     print("=" * 60)
     
     # Initialize
-    agent = FuzzyRecursiveAgent()
     arcade = arc_agi.Arcade()
     
     # Get all games
     games = arcade.get_environments()
+    agent = BaselineAgent()
     print(f"\nRunning on {len(games)} games...")
     
     results = []
@@ -48,8 +48,9 @@ def main():
             # Create environment
             env = arcade.make(game_id, render_mode=None)
             
-            # Reset
+            # Reset and set baseline actions
             agent.reset()
+            agent.baseline_actions = game_env.baseline_actions
             frame_data = env.reset()
             observation = frame_data
             info = {
