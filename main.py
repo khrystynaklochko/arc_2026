@@ -65,10 +65,8 @@ def main():
                     frame_data = env.step(action)
                 except Exception as step_error:
                     print(f"  ⚠️  Step {step} error: {step_error}")
-                    # Continue with a random action
-                    import random
-                    action = random.randint(0, 7)
-                    frame_data = env.step(action)
+                    # Skip this step and continue
+                    break
                 
                 observation = frame_data
                 info = {
