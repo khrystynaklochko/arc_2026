@@ -30,16 +30,17 @@ class ARCToolkit:
         
     # ==================== GAME MANAGEMENT ====================
     
-    def list_games(self) -> List[str]:
+    def list_games(self) -> List[Dict[str, Any]]:
         """
         List all available ARC-AGI-3 games.
         
         Returns:
-            List of game IDs
+            List of game info dictionaries with 'id' and 'title' keys
         """
         try:
-            # The arcade object has access to available games
-            games = self.arcade.list_games() if hasattr(self.arcade, 'list_games') else []
+            # Get available environments from arcade
+            envs = self.arcade.available_environments
+            games = [{"id": env.game_id, "title": env.title} for env in envs]
             print(f"Available games: {len(games)}")
             return games
         except Exception as e:

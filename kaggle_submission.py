@@ -55,7 +55,18 @@ class KaggleSubmission:
             
             # Reset agent and environment
             self.agent.reset()
-            observation, info = env.reset()
+            frame_data = env.reset()
+            
+            # Extract observation and info from FrameDataRaw
+            observation = frame_data
+            info = {
+                "game_id": frame_data.game_id,
+                "state": frame_data.state,
+                "levels_completed": frame_data.levels_completed,
+                "win_levels": frame_data.win_levels,
+                "available_actions": frame_data.available_actions,
+                "guid": frame_data.guid
+            }
             
             # Track episode
             episode_actions = []
@@ -69,38 +80,61 @@ class KaggleSubmission:
                 episode_actions.append(action)
                 
                 # Take step
-                next_observation, reward, terminated, truncated, info = env.step(action)
+                frame_data = env.step(action)
+                
+                # Extract next observation and info
+                next_observation = frame_data
+                next_info = {
+                    "game_id": frame_data.game_id,
+                    "state": frame_data.state,
+                    "levels_completed": frame_data.levels_completed,
+                    "win_levels": frame_data.win_levels,
+                    "available_actions": frame_data.available_actions,
+                    "guid": frame_data.guid
+                }
+                
+                # Calculate reward (levels completed)
+                reward = frame_data.levels_completed - info.get("levels_completed", 0)
                 episode_rewards.append(reward)
                 total_reward += reward
+                
+                # Check if done
+                terminated = frame_data.state in ["WON", "LOST"]
+                truncated = step >= max_steps - 1
                 
                 # Update agent
                 self.agent.update(
                     observation, action, reward, next_observation,
-                    terminated or truncated, info
+                    terminated or truncated, next_info
                 )
                 
                 observation = next_observation
+                info = next_info
                 
                 # Check if done
                 if terminated or truncated:
                     print(f"Episode finished at step {step + 1}")
+                    print(f"Final state: {frame_data.state}")
                     break
             
             # Collect results
+            success = info.get("state") == "WON" if isinstance(info, dict) else False
             result = {
                 "game_id": game_id,
-                "success": info.get("success", False),
+                "success": success,
                 "total_reward": total_reward,
                 "steps": len(episode_actions),
                 "actions": episode_actions,
-                "final_observation": observation.tolist() if hasattr(observation, 'tolist') else observation
+                "final_state": info.get("state", "UNKNOWN") if isinstance(info, dict) else "UNKNOWN",
+                "levels_completed": info.get("levels_completed", 0) if isinstance(info, dict) else 0
             }
             
             print(f"Success: {result['success']}")
             print(f"Total Reward: {result['total_reward']}")
             print(f"Steps: {result['steps']}")
+            print(f"Levels Completed: {result['levels_completed']}/{info.get('win_levels', '?') if isinstance(info, dict) else '?'}")
             
-            env.close()
+            # No need to close - arcade manages this
             return result
             
         except Exception as e:
@@ -156,7 +190,10 @@ class KaggleSubmission:
         avg_steps = sum(r.get("steps", 0) for r in self.results) / total_games if total_games > 0 else 0
         
         print(f"Total Games: {total_games}")
-        print(f"Successful: {successful_games} ({successful_games/total_games*100:.1f}%)")
+        if total_games > 0:
+            print(f"Successful: {successful_games} ({successful_games/total_games*100:.1f}%)")
+        else:
+            print(f"Successful: 0 (0.0%)")
         print(f"Total Reward: {total_reward}")
         print(f"Average Steps: {avg_steps:.1f}")
         print(f"Time Elapsed: {elapsed_time:.2f}s")
@@ -240,7 +277,7 @@ def create_agent(agent_type: str = "random", **kwargs):
     Create an agent for submission.
     
     Args:
-        agent_type: Type of agent ("random", "openai", "anthropic")
+        agent_type: Type of agent ("random", "openai", "anthropic", "fuzzy")
         **kwargs: Additional arguments for agent initialization
         
     Returns:
@@ -254,6 +291,9 @@ def create_agent(agent_type: str = "random", **kwargs):
     elif agent_type == "anthropic":
         model = kwargs.get("model", "claude-3-opus-20240229")
         return AnthropicAgent(model=model, name=f"Anthropic-{model}")
+    elif agent_type == "fuzzy":
+        from agents import FuzzyRecursiveAgent
+        return FuzzyRecursiveAgent(name="FuzzyRecursiveAgent")
     else:
         raise ValueError(f"Unknown agent type: {agent_type}")
 
@@ -264,7 +304,7 @@ def main():
     
     parser = argparse.ArgumentParser(description="Generate Kaggle submission for ARC-AGI-3")
     parser.add_argument("--agent", type=str, default="random",
-                       choices=["random", "openai", "anthropic"],
+                       choices=["random", "openai", "anthropic", "fuzzy"],
                        help="Agent type to use")
     parser.add_argument("--model", type=str, default=None,
                        help="Model name for LLM agents")

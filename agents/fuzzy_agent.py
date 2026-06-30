@@ -48,8 +48,25 @@ class State:
     @classmethod
     def from_observation(cls, observation: np.ndarray, prev_obs: Optional[np.ndarray] = None):
         """Create state from observation"""
+        # Handle FrameDataRaw objects from arc-agi API
+        if hasattr(observation, 'frame') and isinstance(observation.frame, list):
+            # Extract the grid from FrameDataRaw.frame (list of numpy arrays)
+            if len(observation.frame) > 0:
+                observation = observation.frame[0]
+            else:
+                # Fallback to empty grid
+                observation = np.zeros((10, 10), dtype=np.int8)
+        
         if not isinstance(observation, np.ndarray):
             observation = np.array(observation)
+        
+        # Also handle prev_obs if it's FrameDataRaw
+        if prev_obs is not None:
+            if hasattr(prev_obs, 'frame') and isinstance(prev_obs.frame, list):
+                if len(prev_obs.frame) > 0:
+                    prev_obs = prev_obs.frame[0]
+                else:
+                    prev_obs = None
         
         grid_hash = hash(observation.tobytes())
         object_count = np.count_nonzero(observation)
@@ -57,7 +74,7 @@ class State:
         grid_shape = observation.shape
         
         changed_cells = 0
-        if prev_obs is not None:
+        if prev_obs is not None and isinstance(prev_obs, np.ndarray):
             changed_cells = np.sum(observation != prev_obs)
         
         return cls(
@@ -523,11 +540,7 @@ class FuzzyRecursiveAgent(BaseAgent):
     def select_action(self, observation: Any, info: Dict) -> int:
         """Select action using fuzzy recursive reasoning"""
         
-        # Convert observation to numpy array
-        if not isinstance(observation, np.ndarray):
-            observation = np.array(observation)
-        
-        # Create state
+        # Create state (from_observation handles FrameDataRaw conversion)
         state = State.from_observation(observation, self.previous_observation)
         self.graph.add_state(state)
         
@@ -606,7 +619,17 @@ class FuzzyRecursiveAgent(BaseAgent):
         """Update internal state"""
         self.previous_state = state
         self.previous_action = action
-        self.previous_observation = observation.copy()
+        
+        # Extract grid from FrameDataRaw if needed
+        if hasattr(observation, 'frame') and isinstance(observation.frame, list):
+            if len(observation.frame) > 0:
+                self.previous_observation = observation.frame[0].copy()
+            else:
+                self.previous_observation = np.zeros((10, 10), dtype=np.int8)
+        elif isinstance(observation, np.ndarray):
+            self.previous_observation = observation.copy()
+        else:
+            self.previous_observation = np.array(observation)
     
     def _estimate_reward(
         self,

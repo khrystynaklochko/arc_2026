@@ -1,0 +1,25 @@
+{
+  "agent": "FuzzyRecursiveAgent",
+  "timestamp": "2026-06-30 23:45:19",
+  "results": [
+    {
+      "game_id": "ls20",
+      "success": false,
+      "error": "too many values to unpack (expected 2)",
+      "total_reward": 0,
+      "steps": 0
+    },
+    {
+      "game_id": "ar25",
+      "success": false,
+      "error": "too many values to unpack (expected 2)",
+      "total_reward": 0,
+      "steps": 0
+    }
+  ],
+  "summary": {
+    "total_games": 2,
+    "successful_games": 0,
+    "total_reward": 0
+  }
+}
