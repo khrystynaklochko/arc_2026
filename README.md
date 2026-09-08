@@ -1,20 +1,20 @@
 # ARC-AGI-3 Agent Framework
 
 ## Project Overview
-The ARC-AGI-3 Agent Framework is a robust research platform designed for the Abstract Reasoning Challenge. It provides an autonomous agent architecture (Pholem) that facilitates the development, evaluation, and submission of AI agents capable of solving complex grid-based reasoning tasks. The system includes modular agent definitions, a simulated environment wrapper, and automated evaluation pipelines.
+The ARC-AGI-3 Agent Framework is a robust research environment designed for developing and evaluating autonomous agents capable of solving abstract reasoning tasks. Built on the Pholem architecture, this framework provides a structured interface for agent interaction, environment simulation, and performance benchmarking.
 
 ## Getting Started
-To begin working with the framework, install the necessary dependencies:
+To begin working with the framework, ensure you have the required dependencies installed. You can run a baseline agent against the evaluation environment using the provided scripts:
+
 ```bash
-pip install -r requirements.txt
-```
-To run a baseline agent against the evaluation environment, use the following command:
-```bash
-python run_agent.py --agent-type baseline
+python3 run_agent.py --agent baseline
 ```
 
 ## Evaluation and Submission
-The framework supports batch evaluation and automated submission generation for Kaggle:
-1. Run batch evaluations: `python batch_evaluator.py`
-2. Generate submission files: `python kaggle_submission.py`
-The generated files are stored in the `/submissions` directory, formatted according to the competition specifications.
+The framework includes a comprehensive evaluation pipeline for benchmarking agent performance across multiple game environments. To generate a submission for the Kaggle competition, use the `kaggle_submission.py` utility:
+
+```bash
+python3 kaggle_submission.py --agent fuzzy_recursive --output-dir submissions
+```
+
+This will generate a JSON submission file in the `submissions/` directory, which can be validated using the built-in `validate_submission` functionality.
