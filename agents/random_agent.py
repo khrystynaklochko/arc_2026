@@ -1,5 +1,8 @@
 """
-Random Agent for ARC-AGI-3 environments
+Random Agent module for ARC-AGI-3 environments.
+
+This module provides a baseline agent that performs actions randomly, 
+useful for verifying environment connectivity and as a performance baseline.
 """
 
 import random
@@ -13,29 +16,30 @@ class RandomAgent(BaseAgent):
     
     Useful as a baseline for comparing more sophisticated agents.
     """
-    
-    def __init__(self, num_actions: int = 10, name: str = "RandomAgent"):
+
+    DEFAULT_NUM_ACTIONS: int = 10
+    INDEX_OFFSET: int = 1
+
+    def __init__(self, num_actions: int = DEFAULT_NUM_ACTIONS, name: str = "RandomAgent") -> None:
         """
         Initialize the random agent.
         
         Args:
-            num_actions: Number of possible actions
-            name: Name of the agent
+            num_actions: Number of possible actions.
+            name: Name of the agent.
         """
         super().__init__(name)
         self.num_actions = num_actions
-    
-    def select_action(self, observation: Any, info: Dict) -> int:
+
+    def select_action(self, observation: Any, info: Dict[str, Any]) -> int:
         """
         Select a random action.
         
         Args:
-            observation: Current game state (unused for random agent)
-            info: Additional information (unused for random agent)
+            observation: Current game state (unused for random agent).
+            info: Additional information (unused for random agent).
             
         Returns:
-            Random action index
+            Random action index.
         """
-        return random.randint(0, self.num_actions - 1)
-
-# Made with Bob
+        return random.randint(0, self.num_actions - self.INDEX_OFFSET)
